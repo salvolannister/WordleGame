@@ -3,6 +3,11 @@
 
 #include "UIStartMenu.h"
 
+#include "Components/Button.h"
+#include "EntitySystem/MovieSceneEntityFactoryTemplates.h"
+#include "Components/TextBlock.h"
+#include "Internationalization/Text.h"
+
 void UUIStartMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -14,6 +19,25 @@ void UUIStartMenu::NativeConstruct()
 	{
 		DownWordLenghtButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnDownWordLenButtonPressed);
 	}
+
+	if (UpWordLenghtButton)
+	{
+		UpWordLenghtButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnUpWordLenButtonPressed);
+	}
+
+	if (DownWordGuessesButton)
+	{
+		DownWordGuessesButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnDownWordGuessesButtonPressed);
+	}
+
+	if (UpWordGuessesButton)
+	{
+		UpWordGuessesButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnUpWordGuessesButtonPressed);
+	}
+
+
+	WorldLengthText->SetText(FText::AsNumber(WorldLength));
+	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }
 
 
@@ -23,24 +47,35 @@ void UUIStartMenu::OnDownWordLenButtonPressed()
 		return;
 	
 	WorldLength--;
-	
-	//DownWordLenghtButton->SetText(FText::FromString(FString::FromInt(WorldLength)));
-	/*if (FText* TextToChange = DownWordLenghtButton->GetChildComponent())
-	{
-	}*/
+	WorldLengthText->SetText(FText::AsNumber(WorldLength));
 		
 }
 
-void UUIStartMenu::OnUpWordButtonPressed()
+void UUIStartMenu::OnUpWordLenButtonPressed()
 {
 	if(WorldLength >= 10)
 		return;
 
 	WorldLength++;
+	WorldLengthText->SetText(FText::AsNumber(WorldLength));
+}
 
-	//UpWordLenghtButton->SetText(FText(TEXT("T"));
-	//if (FText* TextToChange = ButtonToChange->GetChildComponent())
-	//{
-	//	TextToChange->SetText(FText::FromString(FString::FromInt(WorldLength)));
-	//}
+
+void UUIStartMenu::OnDownWordGuessesButtonPressed()
+{
+	if (GuessesNumber <= 3)
+		return;
+
+	GuessesNumber--;
+	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
+
+}
+
+void UUIStartMenu::OnUpWordGuessesButtonPressed()
+{
+	if (GuessesNumber >= 10)
+		return;
+
+	GuessesNumber++;
+	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }

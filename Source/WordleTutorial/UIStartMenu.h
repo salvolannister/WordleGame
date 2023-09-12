@@ -4,15 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Button.h"
+#include "Internationalization/Text.h"
 
 #include "UIStartMenu.generated.h"
-//
-//class UButton;
-//class FOnButtonClickedEvent;
-/**
- * 
- */
+
+class UButton;
+class UTextBlock;
+
+
+
+
 UCLASS()
 class WORDLETUTORIAL_API UUIStartMenu : public UUserWidget
 {
@@ -21,18 +22,21 @@ class WORDLETUTORIAL_API UUIStartMenu : public UUserWidget
 public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<UButton> PlayButton;
+		TObjectPtr<class UButton> PlayButton;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<UButton> QuitButton;	
+		TObjectPtr<class UButton> QuitButton;	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<UButton> DownWordLenghtButton;
+		TObjectPtr<class UButton> DownWordLenghtButton;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<UButton> UpWordLenghtButton;
+		TObjectPtr<class UButton> UpWordLenghtButton;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<UButton> DownWordGuessesButton;
+		TObjectPtr<class UButton> DownWordGuessesButton;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<UButton> UpWordGuessesButton;
-
+		TObjectPtr<class UButton> UpWordGuessesButton;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		TObjectPtr<class UTextBlock> WorldLengthText;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		TObjectPtr<class UTextBlock> GuessesNumberText;
 	int WorldLength;
 	int GuessesNumber;
 
@@ -41,6 +45,10 @@ protected:
 	UFUNCTION()
 		void OnDownWordLenButtonPressed();
 	UFUNCTION()
-		void OnUpWordButtonPressed();
+		void OnUpWordLenButtonPressed();
+	UFUNCTION()
+		void OnDownWordGuessesButtonPressed();
+	UFUNCTION()
+		void OnUpWordGuessesButtonPressed();
 	
 };
