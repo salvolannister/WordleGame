@@ -30,15 +30,21 @@ public:
 		virtual void OnStartMenu_Implementation();
 
 	UFUNCTION(BlueprintCallable)
-	void StartRound(const int InWordLength,const int InNumberOfGuesses);
+		void StartRound(const int InWordLength,const int InNumberOfGuesses);
 
 	UFUNCTION(BlueprintCallable)
 		void QuitRound();
 protected:
 	
+	UPROPERTY(VisibleAnywhere, Transient)
+		FString GoalWord;
 	TObjectPtr<class UUIStartMenu> StartMenuInstance;
 	int WordLength;
 	int NumberOfGuesses;
+	int CurrentLetterIndex;
+	int CurrentGuessIndex;
+	UFUNCTION(BlueprintCallable)
+		void SpawnBoard();
 
 private:
 	TMap<int32, FStringArray> Words;

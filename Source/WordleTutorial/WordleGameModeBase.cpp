@@ -4,6 +4,8 @@
 #include "WordleGameModeBase.h"
 
 #include <Blueprint/UserWidget.h>
+#include <Camera/CameraStackTypes.h>
+#include <Kismet/GameplayStatics.h>
 
 #include "UIStartMenu.h"
 
@@ -30,14 +32,25 @@ void AWordleGameModeBase::OnStartMenu_Implementation()
 void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOfGuesses)
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	/*PlayerController->SetInputMode(F)*/
-	if (StartMenuInstance)
-	{
-		
-	}
 
 	NumberOfGuesses = InNumberOfGuesses;
 	WordLength = InWordLength; 
+	CurrentGuessIndex = 0;
+	CurrentLetterIndex = 0;
+
+	if (!Words.IsEmpty())
+	{
+		if (FStringArray* WordsArray = Words.Find(WordLength))
+		{
+			if (WordsArray->Strings.IsValidIndex(0))
+			{
+				int32 RandomIndex = FMath::RandRange(0, WordsArray->Strings.Num() - 1);
+				GoalWord = WordsArray->Strings[RandomIndex];
+				UE_LOG(LogClass, Log, TEXT("The word chosen is %s"), *GoalWord);
+			}
+		}
+		
+	}
 }
 
 void AWordleGameModeBase::QuitRound()
@@ -45,3 +58,8 @@ void AWordleGameModeBase::QuitRound()
 	
 }
 
+void AWordleGameModeBase::SpawnBoard()
+{
+	// Create widget 
+	// Call spawn board on the UI widget 
+}

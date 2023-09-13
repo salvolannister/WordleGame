@@ -38,7 +38,15 @@ void UUIStartMenu::NativeConstruct()
 		UpWordGuessesButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnUpWordGuessesButtonPressed);
 	}
 
+	if (PlayButton)
+	{
+		PlayButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnPlayButtonPressed);
+	}
 
+	if (QuitButton)
+	{
+		QuitButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnQuitButtonPressed);
+	}
 	WorldLengthText->SetText(FText::AsNumber(WorldLength));
 	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }
@@ -85,7 +93,10 @@ void UUIStartMenu::OnPlayButtonPressed()
 {
 	if (AWordleGameModeBase* GameMode = Cast<AWordleGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
 	{
+		
 		GameMode->StartRound(WorldLength, GuessesNumber);
+		SetVisibility(ESlateVisibility::Hidden);
+		SetIsEnabled(false);
 	}
   
 }
