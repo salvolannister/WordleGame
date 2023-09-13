@@ -18,10 +18,13 @@ void AWordleGameModeBase::BeginPlay()
 void AWordleGameModeBase::OnStartMenu_Implementation()
 {
 	 APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	 StartMenuInstance = Cast<UUIStartMenu>(CreateWidget(PlayerController, UIStartMenuClass));
-	 StartMenuInstance.Get()->AddToPlayerScreen(0);
-	 PlayerController->SetInputMode(FInputModeUIOnly());
-	 PlayerController->bShowMouseCursor = true;
+	 if (StartMenuInstance = Cast<UUIStartMenu>(CreateWidget(PlayerController, UIStartMenuClass)))
+	 {
+		StartMenuInstance.Get()->AddToPlayerScreen(0);
+		PlayerController->SetInputMode(FInputModeUIOnly());
+		PlayerController->bShowMouseCursor = true;
+	 }
+		
 }
 
 void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOfGuesses)
