@@ -9,6 +9,7 @@
 
 #include "WordleGameModeBase.generated.h"
 
+class UUIStartMenu;
 /**
  * 
  */
@@ -17,13 +18,29 @@ class WORDLETUTORIAL_API AWordleGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
+
+	UPROPERTY(EditDefaultsOnly, Category ="Widgets")
+		TSubclassOf<class UUIStartMenu> UIStartMenuClass;
+
 		virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "StartMenu")
 		void OnStartMenu();
 
 		virtual void OnStartMenu_Implementation();
-private:
 
+	UFUNCTION(BlueprintCallable)
+	void StartRound(const int InWordLength,const int InNumberOfGuesses);
+
+	UFUNCTION(BlueprintCallable)
+		void QuitRound();
+protected:
+	
+	TObjectPtr<class UUIStartMenu> StartMenuInstance;
+	int WordLength;
+	int NumberOfGuesses;
+
+private:
 	TMap<int32, FStringArray> Words;
+
 };

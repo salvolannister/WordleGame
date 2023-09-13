@@ -3,7 +3,9 @@
 
 #include "WordleGameModeBase.h"
 
+#include <Blueprint/UserWidget.h>
 
+#include "UIStartMenu.h"
 
 void AWordleGameModeBase::BeginPlay()
 {
@@ -15,5 +17,28 @@ void AWordleGameModeBase::BeginPlay()
 
 void AWordleGameModeBase::OnStartMenu_Implementation()
 {
-	//CreateWidget(this, UUIStartMenu);
+	 APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	 StartMenuInstance = Cast<UUIStartMenu>(CreateWidget(PlayerController, UIStartMenuClass));
+	 StartMenuInstance.Get()->AddToPlayerScreen(0);
+	 PlayerController->SetInputMode(FInputModeUIOnly());
+	 PlayerController->bShowMouseCursor = true;
 }
+
+void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOfGuesses)
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	/*PlayerController->SetInputMode(F)*/
+	if (StartMenuInstance)
+	{
+		
+	}
+
+	NumberOfGuesses = InNumberOfGuesses;
+	WordLength = InWordLength; 
+}
+
+void AWordleGameModeBase::QuitRound()
+{
+	
+}
+

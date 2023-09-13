@@ -7,6 +7,9 @@
 #include "EntitySystem/MovieSceneEntityFactoryTemplates.h"
 #include "Components/TextBlock.h"
 #include "Internationalization/Text.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "WordleGameModeBase.h"
 
 void UUIStartMenu::NativeConstruct()
 {
@@ -40,7 +43,6 @@ void UUIStartMenu::NativeConstruct()
 	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }
 
-
 void UUIStartMenu::OnDownWordLenButtonPressed()
 {
 	if(WorldLength <= 3)
@@ -60,7 +62,6 @@ void UUIStartMenu::OnUpWordLenButtonPressed()
 	WorldLengthText->SetText(FText::AsNumber(WorldLength));
 }
 
-
 void UUIStartMenu::OnDownWordGuessesButtonPressed()
 {
 	if (GuessesNumber <= 3)
@@ -78,4 +79,22 @@ void UUIStartMenu::OnUpWordGuessesButtonPressed()
 
 	GuessesNumber++;
 	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
+}
+
+void UUIStartMenu::OnPlayButtonPressed()
+{
+	if (AWordleGameModeBase* GameMode = Cast<AWordleGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+	{
+		GameMode->StartRound(WorldLength, GuessesNumber);
+	}
+  
+}
+
+void UUIStartMenu::OnQuitButtonPressed()
+{
+
+	if (AWordleGameModeBase* GameMode = Cast<AWordleGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+	{
+		GameMode->QuitRound();
+	}
 }

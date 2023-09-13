@@ -50,5 +50,9 @@ protected:
 		void OnDownWordGuessesButtonPressed();
 	UFUNCTION()
 		void OnUpWordGuessesButtonPressed();
+	UFUNCTION()
+		void OnPlayButtonPressed();
+	UFUNCTION()
+		void OnQuitButtonPressed();
 	
 };
