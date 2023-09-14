@@ -1,13 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+
 #include "WordleGameModeBase.h"
 
 #include <Blueprint/UserWidget.h>
 #include <Camera/CameraStackTypes.h>
 #include <Kismet/GameplayStatics.h>
 
+#include "UIBoard.h"
 #include "UIStartMenu.h"
+
 
 void AWordleGameModeBase::BeginPlay()
 {
@@ -51,6 +54,8 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 		}
 		
 	}
+
+	SpawnBoard();
 }
 
 void AWordleGameModeBase::QuitRound()
@@ -60,6 +65,14 @@ void AWordleGameModeBase::QuitRound()
 
 void AWordleGameModeBase::SpawnBoard()
 {
-	// Create widget 
-	// Call spawn board on the UI widget 
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (BoardInstance = Cast<UUIBoard>(CreateWidget(PlayerController, UIBoardClass)))
+	{
+		BoardInstance->SpawnBoard(NumberOfGuesses, WordLength);
+
+		BoardInstance.Get()->AddToPlayerScreen(0);
+		PlayerController->SetInputMode(FInputModeUIOnly());
+		PlayerController->bShowMouseCursor = true;
+	}
+
 }

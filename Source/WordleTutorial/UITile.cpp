@@ -1,18 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+
 #include "UITile.h"
 
 #include <Components/TextBlock.h>
 #include <Animation/WidgetAnimation.h>
 
 
+
 void UUITile::AnimateTile()
 {
-	if (TileAnimnation == nullptr)
+	if (TileRotateAnimation == nullptr)
 		return;
 
-	UUserWidget::PlayAnimation(TileAnimnation);
+	UUserWidget::PlayAnimation(TileRotateAnimation);
 }
 
 void UUITile::NativeConstruct()

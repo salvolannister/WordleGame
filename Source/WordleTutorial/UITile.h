@@ -27,12 +27,12 @@ public:
 	//{
 	//}
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidget))
 		TObjectPtr<class UButton> TileButton;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidget))
 		TObjectPtr<class UTextBlock> TileLetter;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<class UWidgetAnimation> TileAnimnation;
+	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
+		TObjectPtr<class UWidgetAnimation> TileRotateAnimation;
 
 	UFUNCTION(BlueprintCallable)
 		void SetTileLetter(const FText InLetter);

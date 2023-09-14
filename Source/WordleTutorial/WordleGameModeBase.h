@@ -6,10 +6,12 @@
 #include <GameFramework/GameModeBase.h>
 
 #include "WordleLibrary.h"
+#include "UIBoard.h"
 
 #include "WordleGameModeBase.generated.h"
 
 class UUIStartMenu;
+class UUIBoard;
 /**
  * 
  */
@@ -19,8 +21,10 @@ class WORDLETUTORIAL_API AWordleGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 public:
 
-	UPROPERTY(EditDefaultsOnly, Category ="Widgets")
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<class UUIStartMenu> UIStartMenuClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+		TSubclassOf<UUIBoard> UIBoardClass;
 
 		virtual void BeginPlay() override;
 
@@ -38,7 +42,10 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Transient)
 		FString GoalWord;
+
 	TObjectPtr<class UUIStartMenu> StartMenuInstance;
+	TObjectPtr<class UUIBoard> BoardInstance;
+
 	int WordLength;
 	int NumberOfGuesses;
 	int CurrentLetterIndex;
