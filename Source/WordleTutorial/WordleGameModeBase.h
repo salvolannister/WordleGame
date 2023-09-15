@@ -38,6 +38,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void QuitRound();
+	UFUNCTION(BlueprintCallable)
+		void ConsumeInput(FKey Key);
 protected:
 	
 	UPROPERTY(VisibleAnywhere, Transient)

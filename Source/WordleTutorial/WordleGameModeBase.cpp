@@ -7,8 +7,12 @@
 #include <Blueprint/UserWidget.h>
 #include <Camera/CameraStackTypes.h>
 #include <Kismet/GameplayStatics.h>
+#include <GameFramework/InputSettings.h>
 
+
+#include "WordleLibrary.h"
 #include "UIBoard.h"
+#include "UITile.h"
 #include "UIStartMenu.h"
 
 
@@ -26,7 +30,7 @@ void AWordleGameModeBase::OnStartMenu_Implementation()
 	 if (StartMenuInstance = Cast<UUIStartMenu>(CreateWidget(PlayerController, UIStartMenuClass)))
 	 {
 		StartMenuInstance.Get()->AddToPlayerScreen(0);
-		PlayerController->SetInputMode(FInputModeUIOnly());
+		//PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->bShowMouseCursor = true;
 	 }
 		
@@ -71,8 +75,62 @@ void AWordleGameModeBase::SpawnBoard()
 		BoardInstance->SpawnBoard(NumberOfGuesses, WordLength);
 
 		BoardInstance.Get()->AddToPlayerScreen(0);
-		PlayerController->SetInputMode(FInputModeUIOnly());
+		//PlayerController->SetInputMode(FInputModeGameOnly());
 		PlayerController->bShowMouseCursor = true;
 	}
 
 }
+
+void AWordleGameModeBase::ConsumeInput(FKey Key)
+{
+	bool IsDeleteKey = Key == EKeys::BackSpace || Key == EKeys::Delete;
+
+	if(IsDeleteKey) 
+	{
+		if(CurrentLetterIndex < NumberOfGuesses)
+		{
+			UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex);
+			Tile->SetTileLetter(FText::GetEmpty());
+		}
+	}
+	else if (Key == EKeys::Enter)
+	{
+		if (CurrentLetterIndex == WordLength)
+		{
+			// check if win
+
+			if (CurrentGuessIndex == NumberOfGuesses)
+			{
+				UE_LOG(LogClass, Log, TEXT("Game Over"));
+			}
+			else
+			{
+				CurrentGuessIndex += 1;
+				CurrentLetterIndex = 0;
+			}
+		}
+	}
+	else
+	{
+
+		const FString KeyString = Key.ToString();
+		if (CurrentLetterIndex < WordLength && UWordleLibrary::IsLetter(KeyString))
+		{
+
+			if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex))
+			{
+				Tile->SetTileLetter(FText::FromString(KeyString));
+				CurrentLetterIndex += 1;
+
+			}
+			else
+			{
+				UE_LOG(LogClass, Error, TEXT("Cant retrieve tile at r: %d c: %d "), CurrentGuessIndex, CurrentLetterIndex);
+
+			}
+		}
+		
+	}
+	
+}
+
