@@ -20,28 +20,30 @@ class WORDLETUTORIAL_API AWordleGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
+		virtual void OnStartMenu_Implementation();
+		
+		virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<class UUIStartMenu> UIStartMenuClass;
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UUIBoard> UIBoardClass;
-
-		virtual void BeginPlay() override;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "StartMenu")
 		void OnStartMenu();
-
-		virtual void OnStartMenu_Implementation();
-
 	UFUNCTION(BlueprintCallable)
-		void StartRound(const int InWordLength,const int InNumberOfGuesses);
-
+		void StartRound(const int InWordLength, const int InNumberOfGuesses);
 	UFUNCTION(BlueprintCallable)
 		void QuitRound();
 	UFUNCTION(BlueprintCallable)
 		void ConsumeInput(FKey Key);
+	UFUNCTION(BlueprintCallable)
+		void AnimateTiles(TArray<int>& CorrectLetterPositions, const int RowIndex);
 protected:
 	
+	UFUNCTION(BlueprintCallable)
+		void SpawnBoard();
+	UFUNCTION(BlueprintCallable)
+		TArray<int> GetCorrectLetterPositions();
 	UPROPERTY(VisibleAnywhere, Transient)
 		FString GoalWord;
 
@@ -52,9 +54,8 @@ protected:
 	int NumberOfGuesses;
 	int CurrentLetterIndex;
 	int CurrentGuessIndex;
-	UFUNCTION(BlueprintCallable)
-		void SpawnBoard();
 	bool IsGameOver;
+	TArray<char> GuessWordArray;
 
 private:
 	TMap<int32, FStringArray> Words;

@@ -45,7 +45,7 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 	CurrentGuessIndex = 0;
 	CurrentLetterIndex = 0;
 	IsGameOver = false;
-
+	
 	if (!Words.IsEmpty())
 	{
 		if (FStringArray* WordsArray = Words.Find(WordLength))
@@ -82,6 +82,24 @@ void AWordleGameModeBase::SpawnBoard()
 
 }
 
+TArray<int> AWordleGameModeBase::GetCorrectLetterPositions()
+{
+	TArray<int> CorrectPositions;
+	
+	if(GuessWordArray.Num() < WordLength)
+		return CorrectPositions;
+
+	for (int32 i = 0; i < WordLength; i++)
+	{
+		if(GuessWordArray[i] == GoalWord.GetCharArray()[i])
+		{
+		  CorrectPositions.Add(i);
+		}
+	}
+
+	return CorrectPositions;
+}
+
 void AWordleGameModeBase::ConsumeInput(FKey Key)
 {
 	bool IsDeleteKey = Key == EKeys::BackSpace || Key == EKeys::Delete;
@@ -92,7 +110,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		{
 			UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex - 1);
 			Tile->SetTileLetter(FText::GetEmpty());
-
+			GuessWordArray.RemoveAt(CurrentLetterIndex - 1);
 			CurrentLetterIndex == 0 ? 0 : CurrentLetterIndex--;
 		}
 	}
@@ -101,6 +119,18 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		if (CurrentLetterIndex == WordLength)
 		{
 			// check if win
+			TArray<int> CorrectLetterPositions = GetCorrectLetterPositions();
+
+			if (!CorrectLetterPositions.IsEmpty())
+			{
+				AnimateTiles(CorrectLetterPositions, CurrentGuessIndex);
+			}
+
+			if (CorrectLetterPositions.Num() == WordLength)
+			{
+				UE_LOG(LogClass, Log, TEXT("YOU WON"));
+				return;
+			}
 
 			if (CurrentGuessIndex + 1 == NumberOfGuesses)
 			{
@@ -111,6 +141,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 			{
 				CurrentGuessIndex += 1;
 				CurrentLetterIndex = 0;
+				GuessWordArray.Empty();
 			}
 		}
 	}
@@ -123,6 +154,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 
 			if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex))
 			{
+				GuessWordArray.Add(KeyString.GetCharArray()[0]);
 				Tile->SetTileLetter(FText::FromString(KeyString));
 				CurrentLetterIndex += 1;
 
@@ -136,5 +168,20 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		
 	}
 	
+}
+
+void AWordleGameModeBase::AnimateTiles(TArray<int>& CorrectLetterPositions,const int RowIndex)
+{
+	for (int32 i = 0; i < CorrectLetterPositions.Num(); i++)
+	{
+		const int ColIndex = CorrectLetterPositions[i];
+		FText TileText = BoardInstance->GetTileWordAt(RowIndex, ColIndex);
+		const char CharToCheck = TileText.ToString().GetCharArray()[0];
+		if (GoalWord.GetCharArray()[ColIndex] == CharToCheck)
+		{
+			UUITile* Tile = BoardInstance->GetTileAt(RowIndex, ColIndex);
+			Tile->AnimateTile();
+		}
+	}
 }
 
