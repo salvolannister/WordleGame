@@ -54,6 +54,7 @@ protected:
 	int CurrentGuessIndex;
 	UFUNCTION(BlueprintCallable)
 		void SpawnBoard();
+	bool IsGameOver;
 
 private:
 	TMap<int32, FStringArray> Words;

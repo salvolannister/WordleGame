@@ -44,6 +44,7 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 	WordLength = InWordLength; 
 	CurrentGuessIndex = 0;
 	CurrentLetterIndex = 0;
+	IsGameOver = false;
 
 	if (!Words.IsEmpty())
 	{
@@ -85,11 +86,11 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 {
 	bool IsDeleteKey = Key == EKeys::BackSpace || Key == EKeys::Delete;
 
-	if(IsDeleteKey) 
+	if(IsDeleteKey && !IsGameOver) 
 	{
-		if(CurrentLetterIndex >= 0)
+		if(CurrentLetterIndex - 1 >= 0)
 		{
-			UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex);
+			UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex - 1);
 			Tile->SetTileLetter(FText::GetEmpty());
 
 			CurrentLetterIndex == 0 ? 0 : CurrentLetterIndex--;
@@ -101,8 +102,9 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		{
 			// check if win
 
-			if (CurrentGuessIndex == NumberOfGuesses)
+			if (CurrentGuessIndex + 1 == NumberOfGuesses)
 			{
+				IsGameOver = true;
 				UE_LOG(LogClass, Log, TEXT("Game Over"));
 			}
 			else
