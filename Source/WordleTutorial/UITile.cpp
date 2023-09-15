@@ -28,7 +28,7 @@ void UUITile::NativeConstruct()
 
 	if (TileLetter)
 	{
-		Letter = FText::FromString("A");
+		Letter = FText::FromString(" ");
 		TileLetter->SetText(Letter);
 	}
 }
