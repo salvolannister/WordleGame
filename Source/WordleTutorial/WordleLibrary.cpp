@@ -40,3 +40,11 @@ bool UWordleLibrary::LoadWordsFromFile(FString FileName, int32 RequireWorldLengt
 
 	return true;
 }
+
+bool UWordleLibrary::IsLetter(FString InString)
+{
+	if(InString.Len() != 1)
+		return false;
+
+	return IsASCIILetter(InString.ToUpper().GetCharArray()[0]);
+}

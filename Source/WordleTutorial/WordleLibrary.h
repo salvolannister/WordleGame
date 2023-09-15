@@ -26,4 +26,6 @@ class WORDLETUTORIAL_API UWordleLibrary : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, Category = "WordleLibrary")
 		static bool LoadWordsFromFile(FString FileName, int32 RequireWorldLength, TMap<int32, FStringArray>& words);
+	UFUNCTION(BlueprintCallable, Category = "WordleLibrary")
+		static bool IsLetter(FString InString);
 };
