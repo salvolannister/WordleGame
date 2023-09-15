@@ -9,7 +9,6 @@
 #include <Kismet/GameplayStatics.h>
 #include <GameFramework/InputSettings.h>
 
-
 #include "WordleLibrary.h"
 #include "UIBoard.h"
 #include "UITile.h"
@@ -181,6 +180,7 @@ void AWordleGameModeBase::AnimateTiles(TArray<int>& CorrectLetterPositions,const
 		{
 			UUITile* Tile = BoardInstance->GetTileAt(RowIndex, ColIndex);
 			Tile->AnimateTile();
+			Tile->ChangeTileToWinningColor();
 		}
 	}
 }

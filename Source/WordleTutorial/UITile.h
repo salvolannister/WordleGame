@@ -40,6 +40,9 @@ public:
 		void AnimateTile();
 	UFUNCTION(BlueprintCallable)
 		FText GetTileLetter();
+	/* Changes tile color to green*/
+	UFUNCTION(BlueprintCallable)
+		void ChangeTileToWinningColor();
 protected:
 	
 	void NativeConstruct() override;

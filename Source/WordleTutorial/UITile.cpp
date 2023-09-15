@@ -6,8 +6,8 @@
 
 #include <Components/TextBlock.h>
 #include <Animation/WidgetAnimation.h>
-
-
+#include <Components/Button.h>
+#include <Brushes/SlateColorBrush.h>
 
 void UUITile::AnimateTile()
 {
@@ -20,6 +20,12 @@ void UUITile::AnimateTile()
 FText UUITile::GetTileLetter()
 {
 	return Letter;
+}
+
+void UUITile::ChangeTileToWinningColor()
+{
+    FButtonStyle OldButtonStyle = TileButton->WidgetStyle.SetDisabled(FSlateColorBrush(FLinearColor(0.f, 0.158333f, 0.f)));
+	TileButton->SetStyle(OldButtonStyle);
 }
 
 void UUITile::NativeConstruct()
