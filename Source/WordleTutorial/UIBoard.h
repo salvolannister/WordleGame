@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include <Internationalization/Text.h>
+
 #include "UIBoard.generated.h"
 
 class UUITile;
@@ -27,4 +28,7 @@ public:
 		void SpawnBoard(const int NRow, const int NColumn);
 	UFUNCTION(BlueprintCallable)
 		FText GetTileWordAt(int IndexRow, int IndexColumn) const;
+	UFUNCTION(BlueprintCallable)
+		UUITile* GetTileAt(int IndexRow, int IndexColumn) const;
+
 };

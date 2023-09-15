@@ -17,6 +17,11 @@ void UUITile::AnimateTile()
 	UUserWidget::PlayAnimation(TileRotateAnimation);
 }
 
+FText UUITile::GetTileLetter()
+{
+	return Letter;
+}
+
 void UUITile::NativeConstruct()
 {
 	Super::NativeConstruct();

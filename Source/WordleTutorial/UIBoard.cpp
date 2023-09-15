@@ -24,7 +24,19 @@ void UUIBoard::SpawnBoard(const int NRow, const int NColumn)
 
 }
 
-FText UUIBoard::GetTileWordAt(int IndexRow, int IndecColumn) const
+FText UUIBoard::GetTileWordAt(int IndexRow, int IndexColumn) const
 {
-	return FText::FromString("A");
+	UUITile* Tile = GetTileAt(IndexRow, IndexColumn);
+	return Tile->GetTileLetter();
+}
+
+UUITile* UUIBoard::GetTileAt(int IndexRow, int IndexColumn) const
+{
+	UUITile* Tile = nullptr;
+	int TilePosIndex = (IndexRow + 1) * IndexColumn;
+	if (UWidget* Widget = TileGrid->GetChildAt(TilePosIndex))
+	{
+	 Tile = Cast<UUITile>(Widget);
+	}
+	return Tile;
 }

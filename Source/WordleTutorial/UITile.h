@@ -38,6 +38,8 @@ public:
 		void SetTileLetter(const FText InLetter);
 	UFUNCTION(BlueprintCallable)
 		void AnimateTile();
+	UFUNCTION(BlueprintCallable)
+		FText GetTileLetter();
 protected:
 	
 	void NativeConstruct() override;
