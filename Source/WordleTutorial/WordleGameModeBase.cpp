@@ -87,10 +87,12 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 
 	if(IsDeleteKey) 
 	{
-		if(CurrentLetterIndex < NumberOfGuesses)
+		if(CurrentLetterIndex >= 0)
 		{
 			UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex);
 			Tile->SetTileLetter(FText::GetEmpty());
+
+			CurrentLetterIndex == 0 ? 0 : CurrentLetterIndex--;
 		}
 	}
 	else if (Key == EKeys::Enter)

@@ -10,6 +10,7 @@
 
 void UUIBoard::SpawnBoard(const int NRow, const int NColumn)
 {
+	DimCol = NColumn;
 	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
 	{
 		for (int32 i = 0; i < NRow; i++)
@@ -33,10 +34,10 @@ FText UUIBoard::GetTileWordAt(int IndexRow, int IndexColumn) const
 UUITile* UUIBoard::GetTileAt(int IndexRow, int IndexColumn) const
 {
 	UUITile* Tile = nullptr;
-	int TilePosIndex = (IndexRow + 1) * IndexColumn;
+	int TilePosIndex = (IndexRow*DimCol) + IndexColumn;
 	if (UWidget* Widget = TileGrid->GetChildAt(TilePosIndex))
 	{
-	 Tile = Cast<UUITile>(Widget);
+		Tile = Cast<UUITile>(Widget);
 	}
 	return Tile;
 }

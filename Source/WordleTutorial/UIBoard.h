@@ -31,4 +31,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		UUITile* GetTileAt(int IndexRow, int IndexColumn) const;
 
+protected:
+	/* Dimension of the column for the board*/
+	int DimCol;
 };
