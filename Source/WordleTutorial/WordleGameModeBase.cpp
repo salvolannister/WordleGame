@@ -88,21 +88,27 @@ int AWordleGameModeBase::GetCorrectLetterNumber()
 		return CorrectLetterNum;
 
 	float AnimationDelay = 0.f;
-
+	int OutLetterIndex = 0;
 	for (int32 i = 0; i < WordLength; i++)
 	{
 		if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, i))
 		{
-			if (GuessWordArray[i] == GoalWord.GetCharArray()[i])
+			if (GoalWord.FindChar(GuessWordArray[i], OutLetterIndex))GuessWordArray[i] == GoalWord.GetCharArray()[i])
 			{
-				Tile->AnimateTileWithDelay(AnimationDelay);
-				Tile->ChangeTileColorTo(BoardInstance->WinningColor);
-				AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
-				CorrectLetterNum += 1;
+				if (OutLetterIndex == i)
+				{
+					Tile->AnimateTileWithDelay(AnimationDelay);
+					Tile->ChangeTileColorTo(BoardInstance->WinningColor);
+					AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
+					CorrectLetterNum += 1;
+				}
+				else
+				{
+					Tile->ChangeTileColorTo(BoardInstance->InWrongPositionColor);
+				}
 			}
 			else
 			{
-				// Is word present elsewhere?
 				Tile->ChangeTileColorTo(BoardInstance->WrongColor);
 			}
 
