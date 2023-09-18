@@ -20,7 +20,12 @@ class WORDLETUTORIAL_API UUIBoard : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
+	UPROPERTY(EditDefaultsOnly)
+		FLinearColor WinningColor;
+	UPROPERTY(EditDefaultsOnly)
+		FLinearColor WrongColor;
+	UPROPERTY(EditDefaultsOnly)
+		FLinearColor InWrongPositionColor;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		TObjectPtr<class UUniformGridPanel> TileGrid;
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles")

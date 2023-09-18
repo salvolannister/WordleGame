@@ -81,22 +81,35 @@ void AWordleGameModeBase::SpawnBoard()
 
 }
 
-TArray<int> AWordleGameModeBase::GetCorrectLetterPositions()
+int AWordleGameModeBase::GetCorrectLetterNumber()
 {
-	TArray<int> CorrectPositions;
-	
+	int CorrectLetterNum = 0;
 	if(GuessWordArray.Num() < WordLength)
-		return CorrectPositions;
+		return CorrectLetterNum;
+
+	float AnimationDelay = 0.f;
 
 	for (int32 i = 0; i < WordLength; i++)
 	{
-		if(GuessWordArray[i] == GoalWord.GetCharArray()[i])
+		if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, i))
 		{
-		  CorrectPositions.Add(i);
+			if (GuessWordArray[i] == GoalWord.GetCharArray()[i])
+			{
+				Tile->AnimateTileWithDelay(AnimationDelay);
+				Tile->ChangeTileColorTo(BoardInstance->WinningColor);
+				AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
+				CorrectLetterNum += 1;
+			}
+			else
+			{
+				// Is word present elsewhere?
+				Tile->ChangeTileColorTo(BoardInstance->WrongColor);
+			}
+
 		}
 	}
 
-	return CorrectPositions;
+	return CorrectLetterNum;
 }
 
 void AWordleGameModeBase::ConsumeInput(FKey Key)
@@ -117,15 +130,8 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 	{
 		if (CurrentLetterIndex == WordLength)
 		{
-			// check if win
-			TArray<int> CorrectLetterPositions = GetCorrectLetterPositions();
 
-			if (!CorrectLetterPositions.IsEmpty())
-			{
-				AnimateTiles(CorrectLetterPositions, CurrentGuessIndex);
-			}
-
-			if (CorrectLetterPositions.Num() == WordLength)
+			if (GetCorrectLetterNumber() == WordLength)
 			{
 				UE_LOG(LogClass, Log, TEXT("YOU WON"));
 				return;
@@ -167,23 +173,5 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		
 	}
 	
-}
-
-void AWordleGameModeBase::AnimateTiles(TArray<int>& CorrectLetterPositions,const int RowIndex)
-{
-	float AnimationDelay = 0.f; 
-	for (int32 i = 0; i < CorrectLetterPositions.Num(); i++)
-	{
-		const int ColIndex = CorrectLetterPositions[i];
-		FText TileText = BoardInstance->GetTileWordAt(RowIndex, ColIndex);
-		const char CharToCheck = TileText.ToString().GetCharArray()[0];
-		if (GoalWord.GetCharArray()[ColIndex] == CharToCheck)
-		{
-			UUITile* Tile = BoardInstance->GetTileAt(RowIndex, ColIndex);
-			Tile->AnimateTileWithDelay(AnimationDelay);
-			Tile->ChangeTileToWinningColor();
-			AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
-		}
-	}
 }
 

@@ -25,9 +25,11 @@ FText UUITile::GetTileLetter()
 	return Letter;
 }
 
-void UUITile::ChangeTileToWinningColor()
+
+void UUITile::ChangeTileColorTo(const FLinearColor Color)
 {
-    FButtonStyle OldButtonStyle = TileButton->WidgetStyle.SetDisabled(FSlateColorBrush(FLinearColor(0.f, 0.158333f, 0.f)));
+
+	FButtonStyle OldButtonStyle = TileButton->WidgetStyle.SetDisabled(FSlateColorBrush(Color));
 	TileButton->SetStyle(OldButtonStyle);
 }
 

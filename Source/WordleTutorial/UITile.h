@@ -43,9 +43,8 @@ public:
 		void AnimateTileWithDelay(const float StartDelay);
 	UFUNCTION(BlueprintCallable)
 		FText GetTileLetter();
-	/* Changes tile color to green*/
 	UFUNCTION(BlueprintCallable)
-		void ChangeTileToWinningColor();
+		void ChangeTileColorTo(const FLinearColor Color);
 
 protected:
 	

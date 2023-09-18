@@ -36,14 +36,12 @@ public:
 		void QuitRound();
 	UFUNCTION(BlueprintCallable)
 		void ConsumeInput(FKey Key);
-	UFUNCTION(BlueprintCallable)
-		void AnimateTiles(TArray<int>& CorrectLetterPositions, const int RowIndex);
 protected:
 	
 	UFUNCTION(BlueprintCallable)
 		void SpawnBoard();
 	UFUNCTION(BlueprintCallable)
-		TArray<int> GetCorrectLetterPositions();
+		int GetCorrectLetterNumber();
 	UPROPERTY(VisibleAnywhere, Transient)
 		FString GoalWord;
 
