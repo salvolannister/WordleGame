@@ -9,12 +9,15 @@
 #include <Components/Button.h>
 #include <Brushes/SlateColorBrush.h>
 
-void UUITile::AnimateTile()
-{
-	if (TileRotateAnimation == nullptr)
+void UUITile::AnimateTileWithDelay(const float StartDelay)
+{	
+	if (StartDelay == 0.f)
+	{
+		StartAnimation();
 		return;
+	}
+	GetWorld()->GetTimerManager().SetTimer(AnimationDelayHandle, this, &UUITile::StartAnimation, StartDelay, false);
 
-	UUserWidget::PlayAnimation(TileRotateAnimation);
 }
 
 FText UUITile::GetTileLetter()
@@ -48,3 +51,9 @@ void UUITile::SetTileLetter(const FText InLetter)
 	}
 }
 
+
+void UUITile::StartAnimation()
+{
+	UUserWidget::PlayAnimation(TileRotateAnimation);
+
+}

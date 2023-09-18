@@ -5,12 +5,14 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include <Internationalization/Text.h>
+#include <Engine/EngineTypes.h>
 
 #include "UITile.generated.h"
 
 class UButton;
 class UTextBlock;
 class UWidgetAnimation;
+
 /**
  * 
  */
@@ -25,6 +27,7 @@ public:
 	//UUITile(FText InLetter)
 	//: Letter(InLetter)
 	//{
+	//
 	//}
 
 	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidget))
@@ -37,17 +40,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SetTileLetter(const FText InLetter);
 	UFUNCTION(BlueprintCallable)
-		void AnimateTile();
+		void AnimateTileWithDelay(const float StartDelay);
 	UFUNCTION(BlueprintCallable)
 		FText GetTileLetter();
 	/* Changes tile color to green*/
 	UFUNCTION(BlueprintCallable)
 		void ChangeTileToWinningColor();
+
 protected:
 	
 	void NativeConstruct() override;
+
+	void StartAnimation();
 	
 	FText Letter;
 
-
+	FTimerHandle AnimationDelayHandle;
 };

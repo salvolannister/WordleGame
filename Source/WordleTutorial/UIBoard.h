@@ -20,10 +20,13 @@ class WORDLETUTORIAL_API UUIBoard : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		TObjectPtr<class UUniformGridPanel> TileGrid;
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles")
 		TSubclassOf<class UUITile> TileClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Tiles")
+		float DELAY_BETWEEN_ANIMATIONS;
 	UFUNCTION(BlueprintCallable)
 		void SpawnBoard(const int NRow, const int NColumn);
 	UFUNCTION(BlueprintCallable)

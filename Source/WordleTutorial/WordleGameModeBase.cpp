@@ -171,6 +171,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 
 void AWordleGameModeBase::AnimateTiles(TArray<int>& CorrectLetterPositions,const int RowIndex)
 {
+	float AnimationDelay = 0.f; 
 	for (int32 i = 0; i < CorrectLetterPositions.Num(); i++)
 	{
 		const int ColIndex = CorrectLetterPositions[i];
@@ -179,8 +180,9 @@ void AWordleGameModeBase::AnimateTiles(TArray<int>& CorrectLetterPositions,const
 		if (GoalWord.GetCharArray()[ColIndex] == CharToCheck)
 		{
 			UUITile* Tile = BoardInstance->GetTileAt(RowIndex, ColIndex);
-			Tile->AnimateTile();
+			Tile->AnimateTileWithDelay(AnimationDelay);
 			Tile->ChangeTileToWinningColor();
+			AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
 		}
 	}
 }
