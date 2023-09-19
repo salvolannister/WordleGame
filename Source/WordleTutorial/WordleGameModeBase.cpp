@@ -38,26 +38,25 @@ void AWordleGameModeBase::OnStartMenu_Implementation()
 
 void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOfGuesses)
 {
+	if (!ensure(!Words.IsEmpty()))
+		return;
 	NumberOfGuesses = InNumberOfGuesses;
 	WordLength = InWordLength; 
 	CurrentGuessIndex = 0;
 	CurrentLetterIndex = 0;
 	IsGameOver = false;
 	
-	if (!Words.IsEmpty())
+	// Fail early: add ensure
+	if (FStringArray* WordsArray = Words.Find(WordLength))
 	{
-		if (FStringArray* WordsArray = Words.Find(WordLength))
+		if (!WordsArray->Strings.IsEmpty())
 		{
-			if (WordsArray->Strings.IsValidIndex(0))
-			{
-				int32 RandomIndex = FMath::RandRange(0, WordsArray->Strings.Num() - 1);
-				GoalWord = WordsArray->Strings[RandomIndex];
-				UE_LOG(LogClass, Log, TEXT("The word chosen is %s"), *GoalWord);
-			}
+			int32 RandomIndex = FMath::RandRange(0, WordsArray->Strings.Num() - 1);
+			GoalWord = WordsArray->Strings[RandomIndex];
+			UE_LOG(LogClass, Log, TEXT("The word chosen is %s"), *GoalWord);
 		}
-		
 	}
-
+		
 	SpawnBoard();
 }
 
@@ -68,12 +67,16 @@ void AWordleGameModeBase::QuitRound()
 
 void AWordleGameModeBase::SpawnBoard()
 {
+	// subscribe to event here
+	// hud that manages other widgets 
+
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	if (BoardInstance = Cast<UUIBoard>(CreateWidget(PlayerController, UIBoardClass)))
 	{
+		// rename adding widget to the class and UI as prefix
 		BoardInstance->SpawnBoard(NumberOfGuesses, WordLength);
 
-		BoardInstance.Get()->AddToPlayerScreen(0);
+		BoardInstance->AddToPlayerScreen(0);
 		//PlayerController->SetInputMode(FInputModeGameOnly());
 		PlayerController->bShowMouseCursor = true;
 	}

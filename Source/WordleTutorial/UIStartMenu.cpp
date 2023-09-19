@@ -95,7 +95,8 @@ void UUIStartMenu::OnPlayButtonPressed()
 	{
 		
 		GameMode->StartRound(WorldLength, GuessesNumber);
-		SetVisibility(ESlateVisibility::Hidden);
+		
+		SetVisibility(ESlateVisibility::Collapsed); // hidden calculates the dimension of the widget
 		SetIsEnabled(false);
 	}
   
