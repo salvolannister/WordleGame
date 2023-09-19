@@ -23,12 +23,6 @@ class WORDLETUTORIAL_API UUITile : public UUserWidget
 	
 
 public:
-//Couldn't create this
-	//UUITile(FText InLetter)
-	//: Letter(InLetter)
-	//{
-	//
-	//}
 
 	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidget))
 		TObjectPtr<class UButton> TileButton;
@@ -52,7 +46,11 @@ protected:
 
 	void StartAnimation();
 	
+	void NativeDestruct() override;
+	
 	FText Letter;
 
 	FTimerHandle AnimationDelayHandle;
+
+
 };

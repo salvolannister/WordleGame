@@ -16,6 +16,7 @@ void UUITile::AnimateTileWithDelay(const float StartDelay)
 		StartAnimation();
 		return;
 	}
+	// AnimationDelayHandle should be invalidated in destructor
 	GetWorld()->GetTimerManager().SetTimer(AnimationDelayHandle, this, &UUITile::StartAnimation, StartDelay, false);
 
 }
@@ -28,7 +29,7 @@ FText UUITile::GetTileLetter()
 
 void UUITile::ChangeTileColorTo(const FLinearColor Color)
 {
-
+	// avoid copying structure but use styles in .h 
 	FButtonStyle OldButtonStyle = TileButton->WidgetStyle.SetDisabled(FSlateColorBrush(Color));
 	TileButton->SetStyle(OldButtonStyle);
 }
@@ -58,4 +59,14 @@ void UUITile::StartAnimation()
 {
 	UUserWidget::PlayAnimation(TileRotateAnimation);
 
+}
+
+void UUITile::NativeDestruct()
+{
+	Super::NativeDestruct();
+	
+	if (AnimationDelayHandle.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(AnimationDelayHandle);
+	}
 }
