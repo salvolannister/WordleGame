@@ -14,7 +14,8 @@ class UUIStartMenu;
 class UUIBoard;
 class UGameOverPanel;
 /**
- * 
+ * The management of the different widgets could be moved inside a HUD class 
+ * that just listen of the different states of the GameMode
  */
 UCLASS()
 class WORDLETUTORIAL_API AWordleGameModeBase : public AGameModeBase
@@ -51,7 +52,7 @@ protected:
 		FString GoalWord;
 
 	TObjectPtr<class UUIStartMenu> StartMenuInstance;
-	TObjectPtr<class UUIBoard> BoardInstance;
+	TObjectPtr<class UUIBoard> UIBoardInstanceWidget;
 	TObjectPtr<class UGameOverPanel> GameOverPanelInstance;
 
 	
@@ -60,7 +61,6 @@ protected:
 	int32 CurrentLetterIndex;
 	int32 CurrentGuessIndex;
 	bool IsGameOver;
-	// Change to FString
 	FString GuessWordArray;
 
 private:

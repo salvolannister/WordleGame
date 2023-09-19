@@ -20,7 +20,6 @@
 void AWordleGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	/*Words = new TMap<int32, FStringArray>();*/
 	UWordleLibrary::LoadWordsFromFile("words1.txt", 3, AWordleGameModeBase::Words);
 	OnStartMenu();
 }
@@ -31,7 +30,6 @@ void AWordleGameModeBase::OnStartMenu_Implementation()
 	 if (StartMenuInstance = Cast<UUIStartMenu>(CreateWidget(PlayerController, UIStartMenuClass)))
 	 {
 		StartMenuInstance.Get()->AddToPlayerScreen(0);
-		//PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->bShowMouseCursor = true;
 	 }
 		
@@ -41,13 +39,14 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 {
 	if (!ensure(!Words.IsEmpty()))
 		return;
+	
 	NumberOfGuesses = InNumberOfGuesses;
 	WordLength = InWordLength; 
 	CurrentGuessIndex = 0;
 	CurrentLetterIndex = 0;
 	IsGameOver = false;
 	
-	// Fail early: add ensure
+	// Can't apply ensure here maybe it doesn't work
 	if (FStringArray* WordsArray = Words.Find(WordLength))
 	{
 		if (!WordsArray->Strings.IsEmpty())
@@ -55,10 +54,11 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 			int32 RandomIndex = FMath::RandRange(0, WordsArray->Strings.Num() - 1);
 			GoalWord = WordsArray->Strings[RandomIndex];
 			UE_LOG(LogClass, Log, TEXT("The word chosen is %s"), *GoalWord);
+			SpawnBoard();
 		}
 	}
 		
-	SpawnBoard();
+	
 }
 
 void AWordleGameModeBase::QuitRound()
@@ -69,19 +69,14 @@ void AWordleGameModeBase::QuitRound()
 
 void AWordleGameModeBase::SpawnBoard()
 {
-	// subscribe to event here
-	// hud that manages other widgets 
-
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if (BoardInstance = Cast<UUIBoard>(CreateWidget(PlayerController, UIBoardClass)))
-	{
-		// rename adding widget to the class and UI as prefix
-		BoardInstance->SpawnBoard(NumberOfGuesses, WordLength);
+	if (!ensure(UIBoardInstanceWidget = Cast<UUIBoard>(CreateWidget(PlayerController, UIBoardClass))))
+		return;
 
-		BoardInstance->AddToPlayerScreen(0);
-		//PlayerController->SetInputMode(FInputModeGameOnly());
-		PlayerController->bShowMouseCursor = true;
-	}
+	// subscribe BoardInstance to GameMode events here
+	UIBoardInstanceWidget->SpawnBoard(NumberOfGuesses, WordLength);
+	UIBoardInstanceWidget->AddToPlayerScreen(0);
+	PlayerController->bShowMouseCursor = true;
 
 }
 
@@ -96,22 +91,22 @@ int32 AWordleGameModeBase::GetCorrectLetterNumber()
 	for (int32 i = 0; i < WordLength; i++)
 	{
 		// better using events to manage user interface
-		if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, i))
+		if (UUITile* Tile = UIBoardInstanceWidget->GetTileAt(CurrentGuessIndex, i))
 		{
 			if (GuessWordArray.GetCharArray()[i] == GoalWord.GetCharArray()[i])
 			{
 				Tile->AnimateTileWithDelay(AnimationDelay);
-				Tile->ChangeTileColorTo(BoardInstance->WinningColor);
-				AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
+				Tile->ChangeTileColorTo(UIBoardInstanceWidget->WinningColor);
+				AnimationDelay += UIBoardInstanceWidget->Delay_Between_Animations;
 				CorrectLetterNum += 1;
 			}
 			else if (GoalWord.FindChar(GuessWordArray.GetCharArray()[i], OutCharIndex))
 			{
-				Tile->ChangeTileColorTo(BoardInstance->InWrongPositionColor);
+				Tile->ChangeTileColorTo(UIBoardInstanceWidget->WrongPositionColor);
 			}
 			else
 			{
-				Tile->ChangeTileColorTo(BoardInstance->WrongColor);
+				Tile->ChangeTileColorTo(UIBoardInstanceWidget->WrongColor);
 			}
 
 		}
@@ -128,7 +123,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 	{
 		if(CurrentLetterIndex - 1 >= 0)
 		{
-			UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex - 1);
+			UUITile* Tile = UIBoardInstanceWidget->GetTileAt(CurrentGuessIndex, CurrentLetterIndex - 1);
 			Tile->SetTileLetter(FText::GetEmpty());
 			GuessWordArray.RemoveAt(CurrentLetterIndex - 1, 1, true);
 			CurrentLetterIndex == 0 ? 0 : CurrentLetterIndex--;
@@ -165,7 +160,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		if (CurrentLetterIndex < WordLength && UWordleLibrary::IsLetter(KeyString))
 		{
 
-			if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex))
+			if (UUITile* Tile = UIBoardInstanceWidget->GetTileAt(CurrentGuessIndex, CurrentLetterIndex))
 			{
 				GuessWordArray.AppendChar(KeyString.GetCharArray()[0]);
 				Tile->SetTileLetter(FText::FromString(KeyString));
@@ -191,7 +186,6 @@ void AWordleGameModeBase::OpenGameOverPanel()
 		GameOverPanelInstance->SetGameOverDetailText(FText::FromString(GoalWord));
 
 		GameOverPanelInstance.Get()->AddToPlayerScreen(0);
-		//PlayerController->SetInputMode(FInputModeGameOnly());
 		PlayerController->bShowMouseCursor = true;
 	}
 }

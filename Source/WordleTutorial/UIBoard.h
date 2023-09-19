@@ -24,14 +24,15 @@ public:
 		FLinearColor WinningColor;
 	UPROPERTY(EditDefaultsOnly)
 		FLinearColor WrongColor;
+	//Remove In from the name cause it's confusing
 	UPROPERTY(EditDefaultsOnly)
-		FLinearColor InWrongPositionColor;
+		FLinearColor WrongPositionColor;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		TObjectPtr<class UUniformGridPanel> TileGrid;
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles")
 		TSubclassOf<class UUITile> TileClass;
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles")
-		float DELAY_BETWEEN_ANIMATIONS;
+		float Delay_Between_Animations;
 	UFUNCTION(BlueprintCallable)
 		void SpawnBoard(const int NRow, const int NColumn);
 	UFUNCTION(BlueprintCallable)
