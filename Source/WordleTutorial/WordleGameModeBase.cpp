@@ -85,27 +85,27 @@ void AWordleGameModeBase::SpawnBoard()
 
 }
 
-int AWordleGameModeBase::GetCorrectLetterNumber()
+int32 AWordleGameModeBase::GetCorrectLetterNumber()
 {
-	int CorrectLetterNum = 0;
-	if(GuessWordArray.Num() < WordLength)
+	int32 CorrectLetterNum = 0;
+	if(GuessWordArray.Len() < WordLength)
 		return CorrectLetterNum;
 
 	float AnimationDelay = 0.f;
-	int OutCharIndex = 0;
+	int32 OutCharIndex = 0;
 	for (int32 i = 0; i < WordLength; i++)
 	{
 		// better using events to manage user interface
 		if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, i))
 		{
-			if (GuessWordArray[i] == GoalWord.GetCharArray()[i])
+			if (GuessWordArray.GetCharArray()[i] == GoalWord.GetCharArray()[i])
 			{
 				Tile->AnimateTileWithDelay(AnimationDelay);
 				Tile->ChangeTileColorTo(BoardInstance->WinningColor);
 				AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
 				CorrectLetterNum += 1;
 			}
-			else if (GoalWord.FindChar(GuessWordArray[i], OutCharIndex))
+			else if (GoalWord.FindChar(GuessWordArray.GetCharArray()[i], OutCharIndex))
 			{
 				Tile->ChangeTileColorTo(BoardInstance->InWrongPositionColor);
 			}
@@ -130,7 +130,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		{
 			UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex - 1);
 			Tile->SetTileLetter(FText::GetEmpty());
-			GuessWordArray.RemoveAt(CurrentLetterIndex - 1);
+			GuessWordArray.RemoveAt(CurrentLetterIndex - 1, 1, true);
 			CurrentLetterIndex == 0 ? 0 : CurrentLetterIndex--;
 		}
 	}
@@ -167,7 +167,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 
 			if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, CurrentLetterIndex))
 			{
-				GuessWordArray.Add(KeyString.GetCharArray()[0]);
+				GuessWordArray.AppendChar(KeyString.GetCharArray()[0]);
 				Tile->SetTileLetter(FText::FromString(KeyString));
 				CurrentLetterIndex += 1;
 

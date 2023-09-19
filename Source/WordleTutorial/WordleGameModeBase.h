@@ -46,7 +46,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void SpawnBoard();
 	UFUNCTION(BlueprintCallable)
-		int GetCorrectLetterNumber();
+		int32 GetCorrectLetterNumber();
 	UPROPERTY(VisibleAnywhere, Transient)
 		FString GoalWord;
 
@@ -54,12 +54,14 @@ protected:
 	TObjectPtr<class UUIBoard> BoardInstance;
 	TObjectPtr<class UGameOverPanel> GameOverPanelInstance;
 
-	int WordLength;
-	int NumberOfGuesses;
-	int CurrentLetterIndex;
-	int CurrentGuessIndex;
+	
+	int32 WordLength;
+	int32 NumberOfGuesses;
+	int32 CurrentLetterIndex;
+	int32 CurrentGuessIndex;
 	bool IsGameOver;
-	TArray<char> GuessWordArray;
+	// Change to FString
+	FString GuessWordArray;
 
 private:
 	TMap<int32, FStringArray> Words;
