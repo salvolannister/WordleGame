@@ -12,6 +12,7 @@
 
 class UUIStartMenu;
 class UUIBoard;
+class UGameOverPanel;
 /**
  * 
  */
@@ -28,6 +29,8 @@ public:
 		TSubclassOf<class UUIStartMenu> UIStartMenuClass;
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UUIBoard> UIBoardClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+		TSubclassOf<UGameOverPanel> UIGameOverPanelClass;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "StartMenu")
 		void OnStartMenu();
 	UFUNCTION(BlueprintCallable)
@@ -36,6 +39,8 @@ public:
 		void QuitRound();
 	UFUNCTION(BlueprintCallable)
 		void ConsumeInput(FKey Key);
+	UFUNCTION(BlueprintCallable)
+		void OpenGameOverPanel();
 protected:
 	
 	UFUNCTION(BlueprintCallable)
@@ -47,6 +52,7 @@ protected:
 
 	TObjectPtr<class UUIStartMenu> StartMenuInstance;
 	TObjectPtr<class UUIBoard> BoardInstance;
+	TObjectPtr<class UGameOverPanel> GameOverPanelInstance;
 
 	int WordLength;
 	int NumberOfGuesses;
