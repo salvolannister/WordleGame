@@ -20,38 +20,38 @@ void UUIStartMenu::NativeConstruct()
 
 	if (DownWordLenghtButton)
 	{
-		DownWordLenghtButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnDownWordLenButtonPressed);
+		DownWordLenghtButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnDownWordLenButtonClicked);
 	}
 
 	if (UpWordLenghtButton)
 	{
-		UpWordLenghtButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnUpWordLenButtonPressed);
+		UpWordLenghtButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnUpWordLenButtonClicked);
 	}
 
 	if (DownWordGuessesButton)
 	{
-		DownWordGuessesButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnDownWordGuessesButtonPressed);
+		DownWordGuessesButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnDownWordGuessesButtonClicked);
 	}
 
 	if (UpWordGuessesButton)
 	{
-		UpWordGuessesButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnUpWordGuessesButtonPressed);
+		UpWordGuessesButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnUpWordGuessesButtonClicked);
 	}
 
 	if (PlayButton)
 	{
-		PlayButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnPlayButtonPressed);
+		PlayButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnPlayButtonClicked);
 	}
 
 	if (QuitButton)
 	{
-		QuitButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnQuitButtonPressed);
+		QuitButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnQuitButtonClicked);
 	}
 	WordLengthText->SetText(FText::AsNumber(WorldLength));
 	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }
 
-void UUIStartMenu::OnDownWordLenButtonPressed()
+void UUIStartMenu::OnDownWordLenButtonClicked()
 {
 	if(WorldLength <= 3)
 		return;
@@ -61,7 +61,7 @@ void UUIStartMenu::OnDownWordLenButtonPressed()
 		
 }
 
-void UUIStartMenu::OnUpWordLenButtonPressed()
+void UUIStartMenu::OnUpWordLenButtonClicked()
 {
 	if(WorldLength >= 10)
 		return;
@@ -70,7 +70,7 @@ void UUIStartMenu::OnUpWordLenButtonPressed()
 	WordLengthText->SetText(FText::AsNumber(WorldLength));
 }
 
-void UUIStartMenu::OnDownWordGuessesButtonPressed()
+void UUIStartMenu::OnDownWordGuessesButtonClicked()
 {
 	if (GuessesNumber <= 3)
 		return;
@@ -80,7 +80,7 @@ void UUIStartMenu::OnDownWordGuessesButtonPressed()
 
 }
 
-void UUIStartMenu::OnUpWordGuessesButtonPressed()
+void UUIStartMenu::OnUpWordGuessesButtonClicked()
 {
 	if (GuessesNumber >= 10)
 		return;
@@ -89,7 +89,7 @@ void UUIStartMenu::OnUpWordGuessesButtonPressed()
 	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }
 
-void UUIStartMenu::OnPlayButtonPressed()
+void UUIStartMenu::OnPlayButtonClicked()
 {
 	if (AWordleGameModeBase* GameMode = Cast<AWordleGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
 	{
@@ -102,7 +102,7 @@ void UUIStartMenu::OnPlayButtonPressed()
   
 }
 
-void UUIStartMenu::OnQuitButtonPressed()
+void UUIStartMenu::OnQuitButtonClicked()
 {
 
 	if (AWordleGameModeBase* GameMode = Cast<AWordleGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))

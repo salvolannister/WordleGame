@@ -41,18 +41,20 @@ public:
 	int GuessesNumber;
 
 protected:
+	
 	void NativeConstruct() override;
+
 	UFUNCTION()
-		void OnDownWordLenButtonPressed();
+		void OnDownWordLenButtonClicked();
 	UFUNCTION()
-		void OnUpWordLenButtonPressed();
+		void OnUpWordLenButtonClicked();
 	UFUNCTION()
-		void OnDownWordGuessesButtonPressed();
+		void OnDownWordGuessesButtonClicked();
 	UFUNCTION()
-		void OnUpWordGuessesButtonPressed();
+		void OnUpWordGuessesButtonClicked();
 	UFUNCTION()
-		void OnPlayButtonPressed();
+		void OnPlayButtonClicked();
 	UFUNCTION()
-		void OnQuitButtonPressed();
+		void OnQuitButtonClicked();
 	
 };
