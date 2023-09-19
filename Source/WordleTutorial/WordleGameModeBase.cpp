@@ -13,6 +13,7 @@
 #include "UIBoard.h"
 #include "UITile.h"
 #include "UIStartMenu.h"
+#include "GameOverPanel.h"
 
 
 void AWordleGameModeBase::BeginPlay()
@@ -37,8 +38,6 @@ void AWordleGameModeBase::OnStartMenu_Implementation()
 
 void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOfGuesses)
 {
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-
 	NumberOfGuesses = InNumberOfGuesses;
 	WordLength = InWordLength; 
 	CurrentGuessIndex = 0;
@@ -88,7 +87,7 @@ int AWordleGameModeBase::GetCorrectLetterNumber()
 		return CorrectLetterNum;
 
 	float AnimationDelay = 0.f;
-
+	int OutCharIndex = 0;
 	for (int32 i = 0; i < WordLength; i++)
 	{
 		if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, i))
@@ -100,9 +99,12 @@ int AWordleGameModeBase::GetCorrectLetterNumber()
 				AnimationDelay += BoardInstance->DELAY_BETWEEN_ANIMATIONS;
 				CorrectLetterNum += 1;
 			}
+			else if (GoalWord.FindChar(GuessWordArray[i], OutCharIndex))
+			{
+				Tile->ChangeTileColorTo(BoardInstance->InWrongPositionColor);
+			}
 			else
 			{
-				// Is word present elsewhere?
 				Tile->ChangeTileColorTo(BoardInstance->WrongColor);
 			}
 
@@ -140,7 +142,7 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 			if (CurrentGuessIndex + 1 == NumberOfGuesses)
 			{
 				IsGameOver = true;
-				UE_LOG(LogClass, Log, TEXT("Game Over"));
+				OpenGameOverPanel();
 			}
 			else
 			{
@@ -173,5 +175,18 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		
 	}
 	
+}
+
+void AWordleGameModeBase::OpenGameOverPanel()
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (GameOverPanelInstance = Cast<UGameOverPanel>(CreateWidget(PlayerController, UIGameOverPanelClass)))
+	{
+		GameOverPanelInstance->SetGameOverDetailText(FText::FromString(GoalWord));
+
+		GameOverPanelInstance.Get()->AddToPlayerScreen(0);
+		//PlayerController->SetInputMode(FInputModeGameOnly());
+		PlayerController->bShowMouseCursor = true;
+	}
 }
 

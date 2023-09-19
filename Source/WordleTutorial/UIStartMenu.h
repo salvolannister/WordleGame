@@ -34,7 +34,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		TObjectPtr<class UButton> UpWordGuessesButton;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		TObjectPtr<class UTextBlock> WorldLengthText;
+		TObjectPtr<class UTextBlock> WordLengthText;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		TObjectPtr<class UTextBlock> GuessesNumberText;
 	int WorldLength;

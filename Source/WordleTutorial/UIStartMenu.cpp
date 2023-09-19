@@ -47,7 +47,7 @@ void UUIStartMenu::NativeConstruct()
 	{
 		QuitButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnQuitButtonPressed);
 	}
-	WorldLengthText->SetText(FText::AsNumber(WorldLength));
+	WordLengthText->SetText(FText::AsNumber(WorldLength));
 	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }
 
@@ -57,7 +57,7 @@ void UUIStartMenu::OnDownWordLenButtonPressed()
 		return;
 	
 	WorldLength--;
-	WorldLengthText->SetText(FText::AsNumber(WorldLength));
+	WordLengthText->SetText(FText::AsNumber(WorldLength));
 		
 }
 
@@ -67,7 +67,7 @@ void UUIStartMenu::OnUpWordLenButtonPressed()
 		return;
 
 	WorldLength++;
-	WorldLengthText->SetText(FText::AsNumber(WorldLength));
+	WordLengthText->SetText(FText::AsNumber(WorldLength));
 }
 
 void UUIStartMenu::OnDownWordGuessesButtonPressed()
