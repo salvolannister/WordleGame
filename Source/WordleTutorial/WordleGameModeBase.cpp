@@ -4,6 +4,7 @@
 
 #include "WordleGameModeBase.h"
 
+#include <Kismet/KismetSystemLibrary.h>
 #include <Blueprint/UserWidget.h>
 #include <Camera/CameraStackTypes.h>
 #include <Kismet/GameplayStatics.h>
@@ -62,7 +63,8 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 
 void AWordleGameModeBase::QuitRound()
 {
-	
+	APlayerController* PlayerController  = GetWorld()->GetFirstPlayerController();
+	UKismetSystemLibrary::QuitGame(GetWorld(),PlayerController, EQuitPreference::Quit, true);
 }
 
 void AWordleGameModeBase::SpawnBoard()
@@ -93,6 +95,7 @@ int AWordleGameModeBase::GetCorrectLetterNumber()
 	int OutCharIndex = 0;
 	for (int32 i = 0; i < WordLength; i++)
 	{
+		// better using events to manage user interface
 		if (UUITile* Tile = BoardInstance->GetTileAt(CurrentGuessIndex, i))
 		{
 			if (GuessWordArray[i] == GoalWord.GetCharArray()[i])
