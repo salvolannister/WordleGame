@@ -24,7 +24,7 @@ void UUIBoard::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	ClearBoard();
+	/*ClearBoard();*/
 }
 
 void UUIBoard::SpawnBoard(const int NRow, const int NColumn)
