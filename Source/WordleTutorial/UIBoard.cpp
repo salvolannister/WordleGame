@@ -8,22 +8,47 @@
 
 #include "WordleTutorial/UITile.h"
 
+void UUIBoard::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+	
+	if (IsDesignTime() && bWantsToDesign)
+	{
+		ClearBoard();
+		SpawnBoard(RowIndexTest, ColIndexTest);
+	}
+}
+
+
+void UUIBoard::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	ClearBoard();
+}
+
 void UUIBoard::SpawnBoard(const int NRow, const int NColumn)
 {
 	DimCol = NColumn;
-	if (APlayerController* PlayerController = GetWorld()->GetFirstPlayerController())
+	DimRow = NRow;
+	
+	for (int32 i = 0; i < NRow; i++)
 	{
-		for (int32 i = 0; i < NRow; i++)
+		for (int32 ii = 0; ii < NColumn; ii++)
 		{
-			for (int32 ii = 0; ii < NColumn; ii++)
-			{
-				UUITile* TempTile = Cast<UUITile>(CreateWidget(PlayerController, TileClass));
-				TileGrid->AddChildToUniformGrid(TempTile, i, ii);
-			}
+			UUITile* TempTile = Cast<UUITile>(CreateWidget(GetWorld(), TileClass));
+			TileGrid->AddChildToUniformGrid(TempTile, i, ii);
 		}
 	}
+		
 
 }
+
+void UUIBoard::ClearBoard()
+{
+	TileGrid->ClearChildren();
+}
+
 
 FText UUIBoard::GetTileWordAt(int IndexRow, int IndexColumn) const
 {
@@ -41,3 +66,4 @@ UUITile* UUIBoard::GetTileAt(int IndexRow, int IndexColumn) const
 	}
 	return Tile;
 }
+

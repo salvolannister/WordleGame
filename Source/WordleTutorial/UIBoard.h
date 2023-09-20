@@ -20,6 +20,12 @@ class WORDLETUTORIAL_API UUIBoard : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere)
+		float RowIndexTest;
+	UPROPERTY(EditAnywhere)
+		float ColIndexTest;
+	UPROPERTY(EditAnywhere)
+		bool bWantsToDesign;
 	UPROPERTY(EditDefaultsOnly)
 		FLinearColor WinningColor;
 	UPROPERTY(EditDefaultsOnly)
@@ -39,8 +45,14 @@ public:
 		FText GetTileWordAt(int IndexRow, int IndexColumn) const;
 	UFUNCTION(BlueprintCallable)
 		UUITile* GetTileAt(int IndexRow, int IndexColumn) const;
+	UFUNCTION(BlueprintCallable)
+		void ClearBoard();
 
 protected:
 	/* Dimension of the column for the board*/
-	int DimCol;
+	int32 DimCol;
+	int32 DimRow;
+
+	void NativePreConstruct() override;
+	void NativeConstruct() override;
 };
