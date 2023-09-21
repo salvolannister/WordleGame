@@ -38,7 +38,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles")
 		TSubclassOf<class UUITile> TileClass;
 	UPROPERTY(EditDefaultsOnly, Category = "Tiles")
-		float Delay_Between_Animations;
+		float DelayBetweenAnimations;
 	UFUNCTION(BlueprintCallable)
 		void SpawnBoard(const int NRow, const int NColumn);
 	UFUNCTION(BlueprintCallable)

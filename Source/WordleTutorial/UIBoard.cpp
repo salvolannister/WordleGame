@@ -81,7 +81,7 @@ void UUIBoard::HandleTileChange(int32 IndexRow, int32 IndexColumn, int32 TileCha
 		case 0: // Winning match
 			Tile->AnimateTileWithDelay(AnimationDelay);
 			Tile->ChangeTileColorTo(WinningColor);
-			AnimationDelay += Delay_Between_Animations;
+			AnimationDelay += DelayBetweenAnimations;
 			break;
 		case 1: // Letter present but in wrong position
 			Tile->ChangeTileColorTo(WrongPositionColor);
