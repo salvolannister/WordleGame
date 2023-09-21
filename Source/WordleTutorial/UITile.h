@@ -13,6 +13,7 @@ class UButton;
 class UTextBlock;
 class UWidgetAnimation;
 
+
 /**
  * 
  */
@@ -30,7 +31,8 @@ public:
 		TObjectPtr<class UTextBlock> TileLetter;
 	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
 		TObjectPtr<class UWidgetAnimation> TileRotateAnimation;
-
+	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
+		TObjectPtr<class UWidgetAnimation> TileWriteAnimation;
 	UFUNCTION(BlueprintCallable)
 		void SetTileLetter(const FText InLetter);
 	UFUNCTION(BlueprintCallable)

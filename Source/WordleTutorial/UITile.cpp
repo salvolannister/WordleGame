@@ -50,6 +50,7 @@ void UUITile::SetTileLetter(const FText InLetter)
 	Letter = InLetter;
 	if (TileLetter)
 	{
+		PlayAnimationForward(TileWriteAnimation, 2.f);
 		TileLetter->SetText(Letter);
 	}
 }
