@@ -47,6 +47,7 @@ void UUIStartMenu::NativeConstruct()
 	{
 		QuitButton->OnClicked.AddDynamic(this, &UUIStartMenu::OnQuitButtonClicked);
 	}
+
 	WordLengthText->SetText(FText::AsNumber(WorldLength));
 	GuessesNumberText->SetText(FText::AsNumber(GuessesNumber));
 }
