@@ -24,8 +24,8 @@ public:
 		float RowIndexTest;
 	UPROPERTY(EditAnywhere)
 		float ColIndexTest;
-	UPROPERTY(EditAnywhere)
-		bool bWantsToDesign;
+	//UPROPERTY(EditAnywhere)
+	//	bool bWantsToDesign;
 	UPROPERTY(EditDefaultsOnly)
 		FLinearColor WinningColor;
 	UPROPERTY(EditDefaultsOnly)

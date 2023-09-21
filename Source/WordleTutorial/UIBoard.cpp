@@ -13,7 +13,7 @@ void UUIBoard::NativePreConstruct()
 {
 	Super::NativePreConstruct();
 	
-	if (IsDesignTime() && bWantsToDesign)
+	if (IsDesignTime())
 	{
 		ClearBoard();
 		SpawnBoard(RowIndexTest, ColIndexTest);
