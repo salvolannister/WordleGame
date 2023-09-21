@@ -30,7 +30,6 @@ public:
 		FLinearColor WinningColor;
 	UPROPERTY(EditDefaultsOnly)
 		FLinearColor WrongColor;
-	//Remove In from the name cause it's confusing
 	UPROPERTY(EditDefaultsOnly)
 		FLinearColor WrongPositionColor;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
