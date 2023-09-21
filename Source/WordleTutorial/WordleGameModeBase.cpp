@@ -21,6 +21,13 @@ void AWordleGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	UWordleLibrary::LoadWordsFromFile("words1.txt", 3, AWordleGameModeBase::Words);
+	
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (UIBackgroundPanelInstanceWidget = Cast<UUserWidget>(CreateWidget(PlayerController, UIBackgroundPanelWidget)))
+	{
+		UIBackgroundPanelInstanceWidget.Get()->AddToPlayerScreen(0);
+		PlayerController->bShowMouseCursor = true;
+	}
 	OnStartMenu();
 }
 
@@ -54,13 +61,12 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 			int32 RandomIndex = FMath::RandRange(0, WordsArray->Strings.Num() - 1);
 			GoalWord = WordsArray->Strings[RandomIndex];
 			UE_LOG(LogClass, Log, TEXT("The word chosen is %s"), *GoalWord);
+			UIBackgroundPanelInstanceWidget->SetRenderOpacity(0.5f);
 			SpawnBoard();
 
 			if (!ensure(UIBoardInstanceWidget))
 				return;
 
-		
-			//OnTileChange.AddDynamic(UIBoardInstanceWidget, &UUIBoard::HandleTileChange);
 		}
 	}
 		
@@ -79,7 +85,6 @@ void AWordleGameModeBase::SpawnBoard()
 	if (!ensure(UIBoardInstanceWidget = Cast<UUIBoard>(CreateWidget(PlayerController, UIBoardClass))))
 		return;
 
-	// subscribe BoardInstance to GameMode events here
 	UIBoardInstanceWidget->SpawnBoard(NumberOfGuesses, WordLength);
 	UIBoardInstanceWidget->AddToPlayerScreen(0);
 	PlayerController->bShowMouseCursor = true;
@@ -182,7 +187,7 @@ void AWordleGameModeBase::OpenGameOverPanel()
 	if (GameOverPanelInstance = Cast<UGameOverPanel>(CreateWidget(PlayerController, UIGameOverPanelClass)))
 	{
 		GameOverPanelInstance->SetGameOverDetailText(FText::FromString(GoalWord));
-
+		UIBackgroundPanelInstanceWidget->SetRenderOpacity(1.f);
 		GameOverPanelInstance.Get()->AddToPlayerScreen(0);
 		PlayerController->bShowMouseCursor = true;
 	}

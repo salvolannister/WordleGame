@@ -14,6 +14,7 @@
 class UUIStartMenu;
 class UUIBoard;
 class UGameOverPanel;
+class UUserWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FTileChange, int32, ColumnIndex, int32, RowIndex, int32, ChangeTypeIndex);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FLetterInput, int32, ColumnIndex, int32, RowIndex, FText, TileLetter);
@@ -39,7 +40,9 @@ public:
 		virtual void OnStartMenu_Implementation();
 		
 		virtual void BeginPlay() override;
-
+		 
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+		TSubclassOf<class UUserWidget> UIBackgroundPanelWidget;
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<class UUIStartMenu> UIStartMenuClass;
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
@@ -68,7 +71,7 @@ protected:
 	TObjectPtr<class UUIStartMenu> StartMenuInstance;
 	TObjectPtr<class UUIBoard> UIBoardInstanceWidget;
 	TObjectPtr<class UGameOverPanel> GameOverPanelInstance;
-
+	TObjectPtr<class UUserWidget> UIBackgroundPanelInstanceWidget;
 	
 	int32 WordLength;
 	int32 NumberOfGuesses;
