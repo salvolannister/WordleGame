@@ -10,9 +10,14 @@
 
 #include "WordleGameModeBase.generated.h"
 
+
 class UUIStartMenu;
 class UUIBoard;
 class UGameOverPanel;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FTileChange, int32, ColumnIndex, int32, RowIndex, int32, ChangeTypeIndex);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FLetterInput, int32, ColumnIndex, int32, RowIndex, FText, TileLetter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLetterCheck, bool, bIsCorrectMatch);
 /**
  * The management of the different widgets could be moved inside a HUD class 
  * that just listen of the different states of the GameMode
@@ -22,6 +27,15 @@ class WORDLETUTORIAL_API AWordleGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
+	
+		
+	UPROPERTY(BlueprintAssignable)
+		FTileChange OnTileChange;
+	UPROPERTY(BlueprintAssignable)
+		FLetterInput OnLetterInput;
+	UPROPERTY(BlueprintAssignable)
+		FOnLetterCheck OnLetterCheck;
+
 		virtual void OnStartMenu_Implementation();
 		
 		virtual void BeginPlay() override;

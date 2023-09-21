@@ -55,6 +55,12 @@ void AWordleGameModeBase::StartRound(const int InWordLength,const int InNumberOf
 			GoalWord = WordsArray->Strings[RandomIndex];
 			UE_LOG(LogClass, Log, TEXT("The word chosen is %s"), *GoalWord);
 			SpawnBoard();
+
+			if (!ensure(UIBoardInstanceWidget))
+				return;
+
+		
+			//OnTileChange.AddDynamic(UIBoardInstanceWidget, &UUIBoard::HandleTileChange);
 		}
 	}
 		
@@ -78,6 +84,7 @@ void AWordleGameModeBase::SpawnBoard()
 	UIBoardInstanceWidget->AddToPlayerScreen(0);
 	PlayerController->bShowMouseCursor = true;
 
+	
 }
 
 int32 AWordleGameModeBase::GetCorrectLetterNumber()
@@ -90,26 +97,23 @@ int32 AWordleGameModeBase::GetCorrectLetterNumber()
 	int32 OutCharIndex = 0;
 	for (int32 i = 0; i < WordLength; i++)
 	{
-		// better using events to manage user interface
-		if (UUITile* Tile = UIBoardInstanceWidget->GetTileAt(CurrentGuessIndex, i))
+		int32 TileStateChange = -1;
+		if (GuessWordArray.GetCharArray()[i] == GoalWord.GetCharArray()[i])
 		{
-			if (GuessWordArray.GetCharArray()[i] == GoalWord.GetCharArray()[i])
-			{
-				Tile->AnimateTileWithDelay(AnimationDelay);
-				Tile->ChangeTileColorTo(UIBoardInstanceWidget->WinningColor);
-				AnimationDelay += UIBoardInstanceWidget->Delay_Between_Animations;
-				CorrectLetterNum += 1;
-			}
-			else if (GoalWord.FindChar(GuessWordArray.GetCharArray()[i], OutCharIndex))
-			{
-				Tile->ChangeTileColorTo(UIBoardInstanceWidget->WrongPositionColor);
-			}
-			else
-			{
-				Tile->ChangeTileColorTo(UIBoardInstanceWidget->WrongColor);
-			}
-
+			TileStateChange = 0; // winning
+			CorrectLetterNum += 1;
 		}
+		else if (GoalWord.FindChar(GuessWordArray.GetCharArray()[i], OutCharIndex))
+		{
+			TileStateChange = 1; // in wrong position
+		}
+		else
+		{
+			TileStateChange = 2; // wrong
+		}
+
+		OnTileChange.Broadcast(CurrentGuessIndex, i,TileStateChange);
+		
 	}
 
 	return CorrectLetterNum;
@@ -123,19 +127,21 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 	{
 		if(CurrentLetterIndex - 1 >= 0)
 		{
-			UUITile* Tile = UIBoardInstanceWidget->GetTileAt(CurrentGuessIndex, CurrentLetterIndex - 1);
-			Tile->SetTileLetter(FText::GetEmpty());
+			OnLetterInput.Broadcast(CurrentGuessIndex, CurrentLetterIndex - 1, FText::GetEmpty());
 			GuessWordArray.RemoveAt(CurrentLetterIndex - 1, 1, true);
 			CurrentLetterIndex == 0 ? 0 : CurrentLetterIndex--;
 		}
 	}
 	else if (Key == EKeys::Enter)
 	{
+		bool IsCorrectMatch = false;
 		if (CurrentLetterIndex == WordLength)
 		{
 
 			if (GetCorrectLetterNumber() == WordLength)
 			{
+				IsCorrectMatch = true;
+				
 				UE_LOG(LogClass, Log, TEXT("YOU WON"));
 				return;
 			}
@@ -152,6 +158,8 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 				GuessWordArray.Empty();
 			}
 		}
+
+		OnLetterCheck.Broadcast(IsCorrectMatch);
 	}
 	else
 	{
@@ -159,19 +167,9 @@ void AWordleGameModeBase::ConsumeInput(FKey Key)
 		const FString KeyString = Key.ToString();
 		if (CurrentLetterIndex < WordLength && UWordleLibrary::IsLetter(KeyString))
 		{
-
-			if (UUITile* Tile = UIBoardInstanceWidget->GetTileAt(CurrentGuessIndex, CurrentLetterIndex))
-			{
-				GuessWordArray.AppendChar(KeyString.GetCharArray()[0]);
-				Tile->SetTileLetter(FText::FromString(KeyString));
-				CurrentLetterIndex += 1;
-
-			}
-			else
-			{
-				UE_LOG(LogClass, Error, TEXT("Cant retrieve tile at r: %d c: %d "), CurrentGuessIndex, CurrentLetterIndex);
-
-			}
+			GuessWordArray.AppendChar(KeyString.GetCharArray()[0]);
+			OnLetterInput.Broadcast(CurrentGuessIndex, CurrentLetterIndex, FText::FromString(KeyString));
+			CurrentLetterIndex += 1;
 		}
 		
 	}

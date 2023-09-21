@@ -47,12 +47,19 @@ public:
 		UUITile* GetTileAt(int IndexRow, int IndexColumn) const;
 	UFUNCTION(BlueprintCallable)
 		void ClearBoard();
-
+	UFUNCTION()
+		void HandleTileChange(int32 IndexRow, int32 IndexColumn, int32 TileChangeType);
+	UFUNCTION()
+		void HandleLetterInput(int32 IndexRow, int32 IndexColumn, FText InLetter);
+	UFUNCTION()
+		void HandleLetterCheck(bool bIsCorrectMatch);
 protected:
 	/* Dimension of the column for the board*/
 	int32 DimCol;
 	int32 DimRow;
-
 	void NativePreConstruct() override;
 	void NativeConstruct() override;
+	float AnimationDelay;
+	void NativeDestruct() override;
+
 };
