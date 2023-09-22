@@ -13,7 +13,7 @@ bool UWordleLibrary::LoadWordsFromFile(FString FileName, int32 RequireWorldLengt
 {
 	//Load the raw text from file
 	FString parsedText;
-	if (FFileHelper::LoadFileToString(parsedText, *(FPaths::ProjectContentDir() + FileName)) == false)
+	if (FFileHelper::LoadFileToString(parsedText, *(FPaths::ProjectContentDir() + FileName)) == false, FFileHelper::EHashOptions::None, 0)
 		return false;
 
 	TArray<FString> parsedWords = UKismetStringLibrary::ParseIntoArray(parsedText, "\n");
@@ -24,9 +24,9 @@ bool UWordleLibrary::LoadWordsFromFile(FString FileName, int32 RequireWorldLengt
 			continue;
 
 		word.ToUpperInline();
-
+		word.RemoveFromEnd(TEXT("\r"));
 		bool containsOnlyValidCharacter = true;
-		for (const auto& letter : word.GetCharArray())
+		for (const char& letter : word.GetCharArray())
 		{
 			if (letter != '\0' && IsASCIILetter(letter) == false)
 			{
