@@ -34,6 +34,9 @@ public:
 		FTileChange OnTileChange;
 	UPROPERTY(BlueprintAssignable)
 		FLetterInput OnLetterInput;
+	/* This event is triggered during testing to determine whether the letter in the tile
+	   shares both the same position and character as the letter at the corresponding 
+	   position in the word to be guessed. */
 	UPROPERTY(BlueprintAssignable)
 		FOnLetterCheck OnLetterCheck;
 

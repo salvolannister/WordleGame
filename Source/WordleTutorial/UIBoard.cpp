@@ -32,7 +32,7 @@ void UUIBoard::NativeConstruct()
 	GameMode->OnTileChange.AddDynamic(this, &UUIBoard::HandleTileChange);
 	GameMode->OnLetterInput.AddDynamic(this, &UUIBoard::HandleLetterInput);
 	GameMode->OnLetterCheck.AddDynamic(this, &UUIBoard::HandleLetterCheck);
-	AnimationDelay = 0.f;
+	DelayBetweenTileAnimations = 0.f;
 }
 
 void UUIBoard::NativeDestruct()
@@ -79,9 +79,9 @@ void UUIBoard::HandleTileChange(int32 IndexRow, int32 IndexColumn, int32 TileCha
 	switch (TileChangeType)
 	{
 		case 0: // Winning match
-			Tile->AnimateTileWithDelay(AnimationDelay);
+			Tile->AnimateTileWithDelay(DelayBetweenTileAnimations);
 			Tile->ChangeTileColorTo(WinningColor);
-			AnimationDelay += DelayBetweenAnimations;
+			DelayBetweenTileAnimations += DelayBetweenAnimations;
 			break;
 		case 1: // Letter present but in wrong position
 			Tile->ChangeTileColorTo(WrongPositionColor);
@@ -122,6 +122,6 @@ void UUIBoard::HandleLetterInput(int32 IndexRow, int32 IndexColumn, FText InLett
 
 void UUIBoard::HandleLetterCheck(bool bIsCorrectMatch)
 {
-	AnimationDelay = 0.f;
+	DelayBetweenTileAnimations = 0.f;
 }
 
